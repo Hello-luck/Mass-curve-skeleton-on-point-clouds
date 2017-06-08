@@ -9,13 +9,13 @@ function [T] = ot(P,skel)
         l = find(nei == i);
         mass(i) = length(l);
     end
-    lambda = 100;
+    lambda = 100;   %熵约束参数
     mass = mass ./ size(nei,1);
     q = mass;
     M = pdist2(skel,P);
     K=exp(-lambda*M);
     U=K.*M;
-    [D,lowerEMD,l,m]=sinkhornTransport(q,p,K,U,lambda,[],[],[],[],1); % running with VERBOSE
+    [D,lowerEMD,l,m]=sinkhornTransport(q,p,K,U,lambda,[],[],[],[],1); % 调用sinkhorn距离函数
 
-    T=bsxfun(@times,m',(bsxfun(@times,l,K))); % this is the optimal transport.
+    T=bsxfun(@times,m',(bsxfun(@times,l,K))); % 传输方案.
 end
